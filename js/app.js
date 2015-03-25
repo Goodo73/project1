@@ -11,6 +11,8 @@ var game = {
 	winningCol: []
 };
 
+// test change
+
 function resetBoard() {
 // Set all squares to blank
 	$.each(game.board, function (index,value) {
