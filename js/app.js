@@ -48,6 +48,7 @@ function squareMatch(player,square) {
 }
 
 function winHorizontal() {
+console.log("winHorizontal()")
 // Determine if the game has been won with squares situated horizontally
 	var winningRow = false;
 
@@ -78,10 +79,12 @@ function winHorizontal() {
 		}
 	})
 
+	console.log(winningRow);
 	return winningRow;
 }
 
 function winVertical() {
+console.log("winVertical()")
 // Determine if the game has been won with squares situated vertically
 	var winningColumn = false;
 
@@ -111,10 +114,12 @@ function winVertical() {
 		}
 	};
 
+	console.log(winningColumn);
 	return winningColumn;
 }
 
 function winDiagonal() {
+console.log("winDiagonal()")
 // Determine if the game has been won with squares situated horizontally
 	var winningDiagonal = false;
 	var matches = 0;
@@ -138,6 +143,8 @@ function winDiagonal() {
 		winningDiagonal = true;
 	} else {
 		// Loop through each square in the top-right to bottom-left line
+		var matches = 0;
+
 		for (var r = 0, c = game.board.length - 1, exit = false; r < game.board.length && !exit; r++, c--) {
 			if (squareMatch(game.currentPlayer,game.board[r][c])) {
 				game.winningRow.push(r);
@@ -157,12 +164,14 @@ function winDiagonal() {
 		}
 	}
 
+	console.log(winningDiagonal);
 	return winningDiagonal;
 }
 
 function playGame() {
 	if (winHorizontal() || winVertical() || winDiagonal()) {
 		console.log(game.currentPlayer + " has won!");
+		$(".square").addClass("selected");
 
 	} else if (allSquaresChosen()) {
 		console.log("Game is a draw");
@@ -195,7 +204,6 @@ $(document).ready(function () {
 		game.board[parseInt(parentId) - 1][parseInt(elId) - 1] = game.currentPlayer;
 		
 		playGame();
-
 	})
 
 	$(".reset").on("click",function () {

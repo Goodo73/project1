@@ -14,6 +14,7 @@ h1 {
 	display: inline-block;
 	margin-top: 50px;
 	margin-bottom: 50px;
+	border-radius: 10px;
 }
 
 #row-1, #row-2, #row-3 {
@@ -59,7 +60,13 @@ h1 {
 	margin: 0 auto;
 	font-size: 1.5em;
 	border: solid 1px black;
-	padding: 5px;
+	padding: 10px;
+	cursor: pointer;
+	border-radius: 10px;
+}
+
+.reset:hover {
+	background-color: lime;
 }
 
 
