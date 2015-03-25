@@ -8,13 +8,13 @@
 
 ### Main driver
 - assign the controlling player
-- loop (while neither winner nor draw declared)
-  - player chooses square
+- player chooses square; initiates process:
   - have they won?
     - yes: declare winner
     - no: have all squares been chosen?
       - yes: declare a draw
       - no: toggle controlling player
+- ability to initiate new game once current one ends
 
 ### Data
 - 3 x 3 array
@@ -70,3 +70,5 @@ board = [
 - loop [0][0] -> [0][1] -> [0][2] -> [..][..] -> [2][1] -> [2][2] until any === null; then return false
 - if none are null, return true
 
+## Possible additional funtionality
+- ability to store player names and show scoreboard (keeping track of results)
