@@ -11,6 +11,26 @@ var game = {
 	winningCol: []
 };
 
+function setStorage() {
+	localStorage.setItem("currPlayer",game.currentPlayer);
+	localStorage.setItem("winningRow",JSON.stringify(game.winningRow));
+	localStorage.setItem("winningCol",JSON.stringify(game.winningCol));
+	$.each(game.board, function (index,value) {
+		var row = "boardRow-" + index;
+		localStorage.setItem(row,JSON.stringify(value));
+	})
+}
+
+function removeStorage() {
+	localStorage.removeItem("currPlayer");
+	localStorage.removeItem("winningRow");
+	localStorage.removeItem("winningCol");
+	$.each(game.board, function (index,value) {
+		var row = "boardRow-" + index;
+		localStorage.removeItem(row);
+	})
+}
+
 function resetBoard() {
 // Set all squares to blank
 	$.each(game.board, function (index,value) {
@@ -183,7 +203,6 @@ function playGame() {
 	}
 }
 
-
 $(document).ready(function () {
 
 	game.currentPlayer = game.PLAYER_1;
@@ -203,10 +222,13 @@ $(document).ready(function () {
 		game.board[parseInt(parentId) - 1][parseInt(elId) - 1] = game.currentPlayer;
 		
 		playGame();
+
+		setStorage();
 	})
 
 	$(".reset").on("click",function () {
 		resetBoard();
+		removeStorage();
 		game.winningRow = [];
 		game.winningCol = [];
 		$(".square").removeClass("selected");
