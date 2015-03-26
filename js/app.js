@@ -11,22 +11,59 @@ var game = {
 	winningCol: []
 };
 
+function dataStored() {
+// Return a flag to indicate if backed up data exists for a previous game
+	if (localStorage.getItem("currPlayer")) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 function setStorage() {
+// Back up data for the game in progress
 	localStorage.setItem("currPlayer",game.currentPlayer);
 	localStorage.setItem("winningRow",JSON.stringify(game.winningRow));
 	localStorage.setItem("winningCol",JSON.stringify(game.winningCol));
+
 	$.each(game.board, function (index,value) {
-		var row = "boardRow-" + index;
+		var row = "boardIndex-" + index;
 		localStorage.setItem(row,JSON.stringify(value));
 	})
+
+	var classes = [];
+	$(".square").each(function (index,value) {
+		classes.push($(this).attr("class"));
+	});
+	localStorage.setItem("classes",JSON.stringify(classes));
+}
+
+function getStorage() {
+// Retrieve backed up data
+	game.currentPlayer = localStorage.getItem("currPlayer");
+	game.winningRow = JSON.parse(localStorage.getItem("winningRow"));
+	game.winningCol = JSON.parse(localStorage.getItem("winningCol"));
+
+	$.each(game.board, function (index,value) {
+		var row = "boardIndex-" + index;
+		game.board[index] = JSON.parse(localStorage.getItem(row));
+	})
+
+	var classes = JSON.parse(localStorage.getItem("classes"));
+	$(".square").each(function (index,value) {
+		($(this).attr("class",classes[index]));
+	});
 }
 
 function removeStorage() {
+// Delete the existing backed up data
 	localStorage.removeItem("currPlayer");
 	localStorage.removeItem("winningRow");
 	localStorage.removeItem("winningCol");
+	localStorage.removeItem("classes");
+	
 	$.each(game.board, function (index,value) {
-		var row = "boardRow-" + index;
+		var row = "boardIndex-" + index;
 		localStorage.removeItem(row);
 	})
 }
@@ -185,6 +222,7 @@ function winDiagonal() {
 function playGame() {
 	if (winHorizontal() || winVertical() || winDiagonal()) {
 		console.log(game.currentPlayer + " has won!");
+		// Make all squares unclickable
 		$(".square").addClass("selected");
 		
 		for (var i = 0; i < game.winningRow.length; i++) {
@@ -205,12 +243,16 @@ function playGame() {
 
 $(document).ready(function () {
 
-	game.currentPlayer = game.PLAYER_1;
+	if (dataStored()) {
+	// Recover previous game in progress
+		getStorage();
+	} else {
+	// New game
+		game.currentPlayer = game.PLAYER_1;
+	}
 
 	$(".square").on("click",function () {
-		var elId = this.id.slice(-1);
-		var parentId = $(this).parent()[0].id.slice(-1);
-		
+		// Make clicked square unclickable
 		$(this).addClass("selected");
 		
 		if (game.currentPlayer === game.PLAYER_1) {
@@ -219,6 +261,10 @@ $(document).ready(function () {
 			$(this).addClass("player2");
 		}
 		
+		var elId = this.id.slice(-1);
+		var parentId = $(this).parent()[0].id.slice(-1);
+		
+		// Update game.board to indicate current player has clicked this square 
 		game.board[parseInt(parentId) - 1][parseInt(elId) - 1] = game.currentPlayer;
 		
 		playGame();
