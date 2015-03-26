@@ -99,11 +99,6 @@ function allSquaresChosen() {
 	return allSquares;
 }
 
-function squareMatch(player,square) {
-// Determine whether the current player chose the current square
-	return (player === square) ? true : false;
-}
-
 function winHorizontal() {
 // Determine if the game has been won with squares situated horizontally
 	var winningRow = false;
@@ -114,7 +109,7 @@ function winHorizontal() {
 
 		// Loop through each square in the current row
 		$.each(value, function (idx,val) {
-			if (squareMatch(game.currentPlayer,val)) {
+			if (game.currentPlayer === val) {
 				game.winningRow.push(index);
 				game.winningCol.push(idx);
 				matches++;
@@ -149,7 +144,7 @@ function winVertical() {
 
 		// Loop through each square in the current column
 		for (var r = 0; r < game.board[c].length && !exitColumn; r++) {
-			if (squareMatch(game.currentPlayer,game.board[r][c])) {
+			if (game.currentPlayer === game.board[r][c]) {
 				game.winningRow.push(r);
 				game.winningCol.push(c);
 				matches++;
@@ -178,7 +173,7 @@ function winDiagonal() {
 
 	// Loop through each square in the top-left to bottom-right line
 	for (var r = 0, c = 0, exit = false; r < game.board.length && !exit; r++, c++) {
-		if (squareMatch(game.currentPlayer,game.board[r][c])) {
+		if (game.currentPlayer === game.board[r][c]) {
 			game.winningRow.push(r);
 			game.winningCol.push(c);
 			matches++;
@@ -198,7 +193,7 @@ function winDiagonal() {
 		var matches = 0;
 
 		for (var r = 0, c = game.board.length - 1, exit = false; r < game.board.length && !exit; r++, c--) {
-			if (squareMatch(game.currentPlayer,game.board[r][c])) {
+			if (game.currentPlayer === game.board[r][c]) {
 				game.winningRow.push(r);
 				game.winningCol.push(c);
 				matches++;
@@ -221,24 +216,71 @@ function winDiagonal() {
 
 function playGame() {
 	if (winHorizontal() || winVertical() || winDiagonal()) {
-		console.log(game.currentPlayer + " has won!");
-		// Make all squares unclickable
-		$(".square").addClass("selected");
-		
-		for (var i = 0; i < game.winningRow.length; i++) {
-			var temp = "#row-" + (game.winningRow[i] + 1) + " #col-" + (game.winningCol[i] + 1);
-			$(temp).addClass("win");
-		};
+		displayWin();
 
 	} else if (allSquaresChosen()) {
 		console.log("Game is a draw");
 
-	} else if (game.currentPlayer === game.PLAYER_1) {
-		game.currentPlayer = game.PLAYER_2;
+	} else {
+		toggleCurrentPlayer();
+	}
+}
 
+function displayWin () {
+	console.log(game.currentPlayer + " has won!");
+	// Make all squares unclickable
+	$(".square").addClass("selected");
+	
+	for (var i = 0; i < game.winningRow.length; i++) {
+		var selector = "#row-" + (game.winningRow[i] + 1) + " #col-" + (game.winningCol[i] + 1);
+		$(selector).addClass("win");
+	};
+}
+
+function toggleCurrentPlayer () {
+	if (game.currentPlayer === game.PLAYER_1) {
+		game.currentPlayer = game.PLAYER_2;
 	} else {
 		game.currentPlayer = game.PLAYER_1;
 	}
+}
+
+function updateScreen (element) {
+	// Make clicked square unclickable
+	$(element).addClass("selected");
+	
+	if (game.currentPlayer === game.PLAYER_1) {
+		$(element).addClass("player1");
+	} else {
+		$(element).addClass("player2");
+	}	
+}
+
+function updateGameBoard (element) {
+	var elId = element.id.slice(-1);
+	var parentId = $(element).parent()[0].id.slice(-1);
+	
+	// Update game.board to indicate current player has clicked this square 
+	game.board[parseInt(parentId) - 1][parseInt(elId) - 1] = game.currentPlayer;	
+}
+
+function newGame () {
+	resetBoard();
+	removeStorage();
+
+	game.winningRow = [];
+	game.winningCol = [];
+	
+	$(".square").removeClass("selected");
+	$(".square").removeClass("player1");
+	$(".square").removeClass("player2");
+	$(".square").removeClass("win");
+
+	if (game.currentPlayer === game.PLAYER_1) {
+		game.currentPlayer = game.PLAYER_2;
+	} else {
+		game.currentPlayer = game.PLAYER_1;
+	}	
 }
 
 $(document).ready(function () {
@@ -252,40 +294,13 @@ $(document).ready(function () {
 	}
 
 	$(".square").on("click",function () {
-		// Make clicked square unclickable
-		$(this).addClass("selected");
-		
-		if (game.currentPlayer === game.PLAYER_1) {
-			$(this).addClass("player1");
-		} else {
-			$(this).addClass("player2");
-		}
-		
-		var elId = this.id.slice(-1);
-		var parentId = $(this).parent()[0].id.slice(-1);
-		
-		// Update game.board to indicate current player has clicked this square 
-		game.board[parseInt(parentId) - 1][parseInt(elId) - 1] = game.currentPlayer;
-		
+		updateScreen(this);
+		updateGameBoard(this);		
 		playGame();
-
 		setStorage();
 	})
 
 	$(".reset").on("click",function () {
-		resetBoard();
-		removeStorage();
-		game.winningRow = [];
-		game.winningCol = [];
-		$(".square").removeClass("selected");
-		$(".square").removeClass("player1");
-		$(".square").removeClass("player2");
-		$(".square").removeClass("win");
-
-		if (game.currentPlayer === game.PLAYER_1) {
-			game.currentPlayer = game.PLAYER_2;
-		} else {
-			game.currentPlayer = game.PLAYER_1;
-		}
+		newGame();
 	})
 })
