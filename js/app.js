@@ -300,7 +300,7 @@ $(document).ready(function () {
 		setStorage();
 	})
 
-	$(".reset").on("click",function () {
+	$(".skirmish").on("click",function () {
 		newGame();
 	})
 })

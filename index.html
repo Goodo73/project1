@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Tic Tac Toe</title>
+	<title>Rebellion vs The Empire - Tic Tac Toe game</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/main.css">
@@ -13,29 +13,46 @@
 </head>
 <body>
 	<header>
-		<h1>Tic Tac Toe</h1>
+		<h1>Rebellion <span id="vs">vs</span> The Empire</h1>
 	</header>
 	<main>
-		<div id="gameBoard">
-			<div id="row-1" class="cf">
-				<div id="col-1" class="square"></div>
-				<div id="col-2" class="square"></div>
-				<div id="col-3" class="square"></div>
-			</div>
-			<div id="row-2" class="cf">
-				<div id="col-1" class="square"></div>
-				<div id="col-2" class="square"></div>
-				<div id="col-3" class="square"></div>
-			</div>
-			<div id="row-3" class="cf">
-				<div id="col-1" class="square"></div>
-				<div id="col-2" class="square"></div>
-				<div id="col-3" class="square"></div>
-			</div>
-		</div>
-		<div class="reset">
-			<p>New Game</p>	
-		</div>
+		<!-- <p id="result">STANDOFF!</p> -->
+		<section class="cf">
+			<p class="play1">
+				<label for="p1">Player 1:</label>
+				<input type="text" name="p1" id="p1" placeholder="Enter your name">
+				<img src="images/rebels.svg" alt="Rebel Alliance logo" class="logo">
+			</p>			
+
+			<section id="gameBoard">
+				<div id="row-1" class="cf">
+					<div id="col-1" class="square"></div>
+					<div id="col-2" class="square"></div>
+					<div id="col-3" class="square"></div>
+				</div>
+				<div id="row-2" class="cf">
+					<div id="col-1" class="square"></div>
+					<div id="col-2" class="square"></div>
+					<div id="col-3" class="square"></div>
+				</div>
+				<div id="row-3" class="cf">
+					<div id="col-1" class="square"></div>
+					<div id="col-2" class="square"></div>
+					<div id="col-3" class="square"></div>
+				</div>
+			</section> 
+
+			<p class="play2">
+				<label for="p2">Player 2:</label>
+				<input type="text" name="p2" id="p2" placeholder="Enter your name">
+				<img src="images/empire.svg" alt="Galactic Empire logo" class="logo">
+			</p>
+		</section> 
+
+		<section id="buttons">
+			<p class="button skirmish">Next Skirmish</p>	
+			<p class="button conflict">New Conflict</p>	
+		</section>
 	</main>
 </body>
 </html>

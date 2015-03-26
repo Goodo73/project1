@@ -1,5 +1,11 @@
 body {
 	font-family: 'Play', sans-serif;
+	background-image: url(../images/SW.jpg);
+	background-size: cover;
+}
+
+main {
+	position: relative;
 }
 
 main, h1 {
@@ -7,14 +13,61 @@ main, h1 {
 }
 
 h1 {
-	margin-top: 50px;
+	margin-top: 30px;
 	font-size: 4em;
+	margin-bottom: 50px;
+}
+
+#vs {
+	font-size: 0.5em;
+}
+
+/*#result {
+	position: absolute;
+	font-size: 10em;
+	z-index: 2;
+	top: 100px;
+	left: 50%;
+	margin: 0 0 0 -423px;
+	color: lime;
+}
+*/
+#p1, #p2 {
+	color: lime;
+	font-size: .7em;
+	font-family: 'Play', sans-serif;
+	background-color: black;
+	border-color: #004e5e;
+	border-radius: 10px 0;
+}
+
+label {
+	vertical-align: bottom;
+}
+
+.play1, .play2 {
+	font-size: 2em;
+}
+
+.play1 {
+	float: left;
+	margin-left: 2%;
+}
+
+.play2 {
+	float: right;
+	margin-right: 2%;
+}
+
+.logo {
+	width: 150px;
+	display: block;
+	margin: 30px auto;
 }
 
 #gameBoard {
 	border: solid 3px black;
 	display: inline-block;
-	margin-top: 50px;
 	margin-bottom: 50px;
 	border-radius: 0 20px;
 }
@@ -32,7 +85,7 @@ h1 {
 	margin-bottom: 10px;
 }
 
-.square, .reset {
+.square, .button {
 	cursor: pointer;
 	border: solid 1px black;
 	border-radius: 10px 0;
@@ -45,8 +98,8 @@ h1 {
 	float: left;
 }
 
-.square:hover {
-	border: solid 2px red;
+.square:hover, .button:hover {
+	border: solid 2px lime;
 }
 
 .selected {
@@ -54,7 +107,7 @@ h1 {
 }
 
 .player1, .player2 {
-	background-color: white;
+	background-color: #005F73;
 	background-size: cover;
 }
 
@@ -70,15 +123,13 @@ h1 {
 	background-color: lime;
 }
 
-.reset {
-	width: 20%;
-	margin: 0 auto;
+.button {
+	width: 15%;
+	margin: 0 1%;
 	font-size: 1.5em;
 	padding: 10px;
-}
-
-.reset:hover {
-	background-color: gray;
+	display: inline-block;
+	background-color: #398291;
 }
 
 
