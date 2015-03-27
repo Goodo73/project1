@@ -3,10 +3,12 @@
 
 ### Project 1 - Tic Tac Toe game
 
-#### How To Play
-Each of the two players chooses a side - Rebels or Empire - and enters their name into the appropriate text box. Only once both players have 'signed up' is the game playable.
+[Play](http://goodo73.github.io/project1/)
 
-Gameplay is divided into skirmishes (a single game) and conflicts (a series of games). The winnner of each skirmish is awarded one point. At the end of a skirmish, the next one can be played by clicking `Next Skirmish`. Clicking `New Conflict` will reset player scores to zero, and allow new players to sign up.
+#### How To Play
+Each of the two players chooses a side - Rebels or Empire - and enters their name into the appropriate text box. Only once both players have 'reported for duty' is the game playable.
+
+Gameplay is divided into skirmishes (a single game) and conflicts (a series of games). The winnner of each skirmish is awarded one point. At the end of a skirmish, the next one can be played by clicking `Next Skirmish`. Clicking `New Conflict` will reset player scores to zero, and allow new players to 'report'.
 
 #### Sad thoughts
 - Not completely satisfied with the way I structured the code. Have a nagging feeling there's a better way to determine if a player has 3 squares in a row, but did what I could in the time available.

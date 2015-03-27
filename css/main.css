@@ -32,7 +32,7 @@ h1 {
 	position: absolute;
 	font-size: 7em;
 	z-index: 3;
-	top: 50%;
+	top: 40%;
 	left: 50%;
 	margin-right: -50%;
 	-webkit-transform: translate(-50%, -50%);
@@ -82,12 +82,6 @@ label {
 	background-color: black;
 	border-color: #004e5e;
 	border-radius: 10px 0;
-}
-
-.signUp1, .signUp2 {
-	margin: 15px auto 0;
-	width: 50%;
-	font-size: 1.5em;
 }
 
 #rebelLogo, #empireLogo {
@@ -163,6 +157,12 @@ label {
 	background-color: #398291;
 	font-size: 1.5em;
 	padding: 10px;
+}
+
+.signUp1, .signUp2 {
+	margin: 15px auto 0;
+	width: 60%;
+	font-size: 1.5em;
 }
 
 .skirmish, .conflict {
