@@ -1,12 +1,33 @@
-# GA WDI Melbourne - WDI2 (codyperry)
+# General Assembly, Web Development Immersive Course
+## Melbourne - codyperry group
 
-## Initial thoughts
+### Project 1 - Tic Tac Toe game
 
-### Theme
-- Star Wars
-- Noughts and crosses represented by Rebels and Empire logos
+#### How To Play
+Each of the two players chooses a side - Rebels or Empire - and enters their name into the appropriate text box. Only once both players have 'signed up' is the game playable.
 
-### Main driver
+Gameplay is divided into skirmishes (a single game) and conflicts (a series of games). The winnner of each skirmish is awarded one point. At the end of a skirmish, the next one can be played by clicking `Next Skirmish`. Clicking `New Conflict` will reset player scores to zero, and allow new players to sign up.
+
+#### Sad thoughts
+- Not completely satisfied with the way I structured the code. Have a nagging feeling there's a better way to determine if a player has 3 squares in a row, but did what I could in the time available.
+- As per an article I read on [Design Shack](http://designshack.net/articles/css/how-to-center-anything-with-css/), too often I just fiddled with the CSS until it worked ... or it didn't and I go to our old friend Google; MUST take note of when this happens and record the solution for future reference.
+
+#### Happy thoughts
+- Gave the page a look/styling that I was pleased with (as opposed to thinking "Looks crap but works").
+- Followed the DRY principle well.
+- Successfully stored, retrieved and removed data from localStorage (including using JSON for arrays)
+- Implemented some positioning techniques and z-indexing (eg. game result message and scores).
+
+#### Future improvements
+- Improve page responsiveness.
+- Allow players to choose the board size (beyond the default 3 x 3 layout).
+- Improved stylng of victory/standoff message
+- Sound upon display of victory/standoff message (with ability to mute within game)
+- Keep score of conflict wins (and allow score to be reset)
+
+#### Initial plan
+
+##### Main algorithm
 - assign the controlling player
 - player chooses square; initiates process:
   - have they won?
@@ -16,7 +37,7 @@
       - no: toggle controlling player
 - ability to initiate new game once current one ends
 
-### Data
+##### Data
 - 3 x 3 array
 - unchosen square === null
 - chosen square === 1 or 2 (denotes player number)
@@ -24,9 +45,9 @@
 
 ```
 board = [
-	[null,null,null],
-	[null,null,null],
-	[null,null,null]
+  [null,null,null],
+  [null,null,null],
+  [null,null,null]
 ]
 ```
 
@@ -34,41 +55,13 @@ board = [
 
 ```
 board = [
-	[1,null,1],
-	[2,1,null],
-	[null,2,null]
+  [1,null,1],
+  [2,1,null],
+  [null,2,null]
 ]
 ```
 
-#### Winner horizontal?
-- loop [0][0] -> [0][1] -> [0][2] and save values; call checkWin function
-- loop [1][0] -> [1][1] -> [1][2] and save values; call checkWin function
-- loop [2][0] -> [2][1] -> [2][2] and save values; call checkWin function
-- i constant, j increments
-- return checkWin result
+##### Theme
+- Star Wars
+- Noughts and crosses represented by Rebels and Empire logos
 
-#### Winner vertical?
-- loop [0][0] -> [1][0] -> [2][0] and save values; call checkWin function
-- loop [0][1] -> [1][1] -> [2][1] and save values; call checkWin function
-- loop [0][2] -> [1][2] -> [2][2] and save values; call checkWin function
-- i increments, j constant
-- return checkWin result
-
-#### Winner diagonal?
-- loop [0][0] -> [1][1] -> [2][2] and save values; call checkWin function
-  - i increments & j increments
-- loop [0][2] -> [1][1] -> [2][0] and save values; call checkWin function
-  - i increments & j decrements
-- return checkWin result
-
-##### checkWin function
-- accept player number
-- accept 3 values
-- return true if all 3 values === player number
-
-#### All squares chosen
-- loop [0][0] -> [0][1] -> [0][2] -> [..][..] -> [2][1] -> [2][2] until any === null; then return false
-- if none are null, return true
-
-## Possible additional funtionality
-- ability to store player names and show scoreboard (keeping track of results)
