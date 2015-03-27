@@ -1,5 +1,6 @@
 body {
 	font-family: 'Play', sans-serif;
+	background-color: black;
 	background-image: url(../images/SW.jpg);
 	background-size: cover;
 }
@@ -14,7 +15,7 @@ main, h1 {
 
 h1 {
 	margin-top: 30px;
-	font-size: 4em;
+	font-size: 4.5em;
 	margin-bottom: 50px;
 }
 
@@ -22,47 +23,78 @@ h1 {
 	font-size: 0.5em;
 }
 
-/*#result {
+#result {
+	color: orange;
+	background-color: rgba(0,0,0,0.5);
+	padding: 20px;
+	margin: 0;
+	border-radius: 20px 0;
 	position: absolute;
-	font-size: 10em;
-	z-index: 2;
-	top: 100px;
+	font-size: 7em;
+	z-index: 3;
+	top: 50%;
 	left: 50%;
-	margin: 0 0 0 -423px;
-	color: lime;
+	margin-right: -50%;
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
 }
-*/
-#p1, #p2 {
+
+.score {
 	color: lime;
-	font-size: .7em;
-	font-family: 'Play', sans-serif;
-	background-color: black;
-	border-color: #004e5e;
-	border-radius: 10px 0;
+	font-size: 8em;
+	position: absolute;
+	top: 45%;
+	z-index: 2
+}
+
+#score1 {
+	left: 40%;
+}
+
+#score2 {
+	right: 40%;
 }
 
 label {
 	vertical-align: bottom;
-}
-
-.play1, .play2 {
 	font-size: 2em;
 }
 
 .play1 {
 	float: left;
 	margin-left: 2%;
+	position: relative;
 }
 
 .play2 {
 	float: right;
 	margin-right: 2%;
+	position: relative;
 }
 
-.logo {
-	width: 150px;
+#p1, #p2 {
+	color: lime;
+	font-size: 1.5em;
+	font-family: 'Play', sans-serif;
+	background-color: black;
+	border-color: #004e5e;
+	border-radius: 10px 0;
+}
+
+.signUp1, .signUp2 {
+	margin: 15px auto 0;
+	width: 50%;
+	font-size: 1.5em;
+}
+
+#rebelLogo, #empireLogo {
+	width: 175px;
 	display: block;
-	margin: 30px auto;
+	margin: 50px auto;
+	opacity: 0.6;
 }
 
 #gameBoard {
@@ -102,8 +134,12 @@ label {
 	border: solid 2px lime;
 }
 
-.selected {
+.locked {
 	pointer-events: none;
+}
+
+.hidden {
+	visibility: hidden;
 }
 
 .player1, .player2 {
@@ -120,16 +156,19 @@ label {
 }
 
 .win {
-	background-color: lime;
+	background-color: #00ce00;
 }
 
 .button {
-	width: 15%;
-	margin: 0 1%;
+	background-color: #398291;
 	font-size: 1.5em;
 	padding: 10px;
+}
+
+.skirmish, .conflict {
+	width: 16%;
 	display: inline-block;
-	background-color: #398291;
+	margin: 0 1%;
 }
 
 

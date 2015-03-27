@@ -1,6 +1,6 @@
 var game = {
-	PLAYER_1: "Mike",
-	PLAYER_2: "Bob",
+	PLAYER_1: null,
+	PLAYER_2: null,
 	currentPlayer: "",
 	board: [
 		[null,null,null],
@@ -8,7 +8,9 @@ var game = {
 		[null,null,null]
 	],
 	winningRow: [],
-	winningCol: []
+	winningCol: [],
+	playerOneWins: 0,
+	playerTwoWins: 0,
 };
 
 function dataStored() {
@@ -23,6 +25,11 @@ function dataStored() {
 function setStorage() {
 // Back up data for the game in progress
 	localStorage.setItem("currPlayer",game.currentPlayer);
+	localStorage.setItem("p1",game.PLAYER_1);
+	localStorage.setItem("p2",game.PLAYER_2);
+	localStorage.setItem("p1Wins",game.playerOneWins);
+	localStorage.setItem("p2Wins",game.playerTwoWins);
+	localStorage.setItem("result",$("#result").html());
 	localStorage.setItem("winningRow",JSON.stringify(game.winningRow));
 	localStorage.setItem("winningCol",JSON.stringify(game.winningCol));
 
@@ -31,16 +38,26 @@ function setStorage() {
 		localStorage.setItem(row,JSON.stringify(value));
 	})
 
-	var classes = [];
+	var squares = [];
 	$(".square").each(function (index,value) {
-		classes.push($(this).attr("class"));
+		squares.push($(this).attr("class"));
 	});
-	localStorage.setItem("classes",JSON.stringify(classes));
+	localStorage.setItem("squares",JSON.stringify(squares));
+
+	var buttons = [];
+	$(".button").each(function (index,value) {
+		buttons.push($(this).attr("class"));
+	});
+	localStorage.setItem("buttons",JSON.stringify(buttons));
+
+	localStorage.setItem("rsltClass",$("#result").attr("class"));
 }
 
 function getStorage() {
 // Retrieve backed up data
 	game.currentPlayer = localStorage.getItem("currPlayer");
+	game.playerOneWins = localStorage.getItem("p1Wins");
+	game.playerTwoWins = localStorage.getItem("p2Wins");
 	game.winningRow = JSON.parse(localStorage.getItem("winningRow"));
 	game.winningCol = JSON.parse(localStorage.getItem("winningCol"));
 
@@ -49,10 +66,23 @@ function getStorage() {
 		game.board[index] = JSON.parse(localStorage.getItem(row));
 	})
 
-	var classes = JSON.parse(localStorage.getItem("classes"));
+	var squares = JSON.parse(localStorage.getItem("squares"));
 	$(".square").each(function (index,value) {
-		($(this).attr("class",classes[index]));
+		($(this).attr("class",squares[index]));
 	});
+
+	var buttons = JSON.parse(localStorage.getItem("buttons"));
+	$(".button").each(function (index,value) {
+		($(this).attr("class",buttons[index]));
+	});
+
+	game.PLAYER_1 = localStorage.getItem("p1");
+	game.PLAYER_2 = localStorage.getItem("p2");
+	$("#p1").val(game.PLAYER_1);
+	$("#p2").val(game.PLAYER_2);
+	
+	$("#result").attr("class",localStorage.getItem("rsltClass"));
+	$("#result").html(localStorage.getItem("result"));
 }
 
 function removeStorage() {
@@ -60,7 +90,10 @@ function removeStorage() {
 	localStorage.removeItem("currPlayer");
 	localStorage.removeItem("winningRow");
 	localStorage.removeItem("winningCol");
-	localStorage.removeItem("classes");
+	localStorage.removeItem("squares");
+	localStorage.removeItem("buttons");
+	localStorage.removeItem("result");
+	localStorage.removeItem("rsltClass");
 	
 	$.each(game.board, function (index,value) {
 		var row = "boardIndex-" + index;
@@ -216,10 +249,17 @@ function winDiagonal() {
 
 function playGame() {
 	if (winHorizontal() || winVertical() || winDiagonal()) {
+		if (game.currentPlayer === game.PLAYER_1) {
+			game.playerOneWins++;
+		} else {
+			game.playerTwoWins++;
+		}
+
 		displayWin();
 
 	} else if (allSquaresChosen()) {
-		console.log("Game is a draw");
+		$("#result").html("STANDOFF!");
+		$("#result").removeClass("hidden");
 
 	} else {
 		toggleCurrentPlayer();
@@ -227,14 +267,19 @@ function playGame() {
 }
 
 function displayWin () {
-	console.log(game.currentPlayer + " has won!");
 	// Make all squares unclickable
-	$(".square").addClass("selected");
+	$(".square").addClass("locked");
 	
 	for (var i = 0; i < game.winningRow.length; i++) {
 		var selector = "#row-" + (game.winningRow[i] + 1) + " #col-" + (game.winningCol[i] + 1);
 		$(selector).addClass("win");
 	};
+
+	$("#score1").html(game.playerOneWins);
+	$("#score2").html(game.playerTwoWins);
+
+	$("#result").html("VICTORY to " + game.currentPlayer + "!");
+	$("#result").removeClass("hidden");
 }
 
 function toggleCurrentPlayer () {
@@ -247,7 +292,7 @@ function toggleCurrentPlayer () {
 
 function updateScreen (element) {
 	// Make clicked square unclickable
-	$(element).addClass("selected");
+	$(element).addClass("locked");
 	
 	if (game.currentPlayer === game.PLAYER_1) {
 		$(element).addClass("player1");
@@ -264,17 +309,18 @@ function updateGameBoard (element) {
 	game.board[parseInt(parentId) - 1][parseInt(elId) - 1] = game.currentPlayer;	
 }
 
-function newGame () {
+function newSkirmish () {
 	resetBoard();
 	removeStorage();
 
 	game.winningRow = [];
 	game.winningCol = [];
 	
-	$(".square").removeClass("selected");
+	$(".square").removeClass("locked");
 	$(".square").removeClass("player1");
 	$(".square").removeClass("player2");
 	$(".square").removeClass("win");
+	$("#result").addClass("hidden");
 
 	if (game.currentPlayer === game.PLAYER_1) {
 		game.currentPlayer = game.PLAYER_2;
@@ -283,15 +329,67 @@ function newGame () {
 	}	
 }
 
+function newConflict () {
+	$(".signUp1").removeClass("hidden");
+	$(".signUp2").removeClass("hidden");
+	$("#p1").val("");
+	$("#p2").val("");
+	game.playerOneWins = 0;
+	game.playerTwoWins = 0;
+	$("#score1").html(game.playerOneWins);
+	$("#score2").html(game.playerTwoWins);
+	game.PLAYER_1 = null;
+	game.PLAYER_2 = null;
+	resetBoard();
+	removeStorage();
+	localStorage.removeItem("p1");
+	localStorage.removeItem("p2");
+	localStorage.removeItem("p1Wins");
+	localStorage.removeItem("p2Wins");
+
+	game.winningRow = [];
+	game.winningCol = [];
+	game.currentPlayer = "";
+	$(".skirmish").addClass("locked");
+	$(".conflict").addClass("locked");
+	$(".square").addClass("locked");
+	$(".square").removeClass("player1");
+	$(".square").removeClass("player2");
+	$(".square").removeClass("win");
+	$("#result").addClass("hidden");
+}
+
+function unlockElements () {
+	$(".square").removeClass("locked");
+	$(".skirmish").removeClass("locked");
+	$(".conflict").removeClass("locked");
+}
+
 $(document).ready(function () {
 
 	if (dataStored()) {
 	// Recover previous game in progress
 		getStorage();
-	} else {
-	// New game
-		game.currentPlayer = game.PLAYER_1;
 	}
+
+	$(".signUp1").on("click",function () {
+		game.PLAYER_1 = $("#p1").val();
+		game.currentPlayer = game.PLAYER_1;
+		$(".signUp1").addClass("hidden");
+
+		if (game.PLAYER_2 !== null) {
+			unlockElements();
+		}
+	})
+
+	$(".signUp2").on("click",function () {
+		game.PLAYER_2 = $("#p2").val();
+		$(".signUp2").addClass("hidden");
+
+		if (game.PLAYER_1 !== null) {
+			unlockElements();
+		}
+	})
 
 	$(".square").on("click",function () {
 		updateScreen(this);
@@ -301,6 +399,11 @@ $(document).ready(function () {
 	})
 
 	$(".skirmish").on("click",function () {
-		newGame();
+		newSkirmish();
+		setStorage();
+	})
+
+	$(".conflict").on("click",function () {
+		newConflict();
 	})
 })

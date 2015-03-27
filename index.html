@@ -16,42 +16,46 @@
 		<h1>Rebellion <span id="vs">vs</span> The Empire</h1>
 	</header>
 	<main>
-		<!-- <p id="result">STANDOFF!</p> -->
+		<p id="result" class="hidden"></p>
 		<section class="cf">
-			<p class="play1">
-				<label for="p1">Player 1:</label>
-				<input type="text" name="p1" id="p1" placeholder="Enter your name">
-				<img src="images/rebels.svg" alt="Rebel Alliance logo" class="logo">
-			</p>			
+			<section class="play1">
+				<label for="p1">Rebels:</label>
+				<input type="text" name="p1" id="p1" placeholder=" Enter your name">
+				<p class="button signUp1">Sign up</p>
+				<p class="score" id="score1">0</p>	
+				<img src="images/rebels.svg" alt="Rebel Alliance logo" id="rebelLogo">
+			</section>
 
 			<section id="gameBoard">
 				<div id="row-1" class="cf">
-					<div id="col-1" class="square"></div>
-					<div id="col-2" class="square"></div>
-					<div id="col-3" class="square"></div>
+					<div id="col-1" class="square locked"></div>
+					<div id="col-2" class="square locked"></div>
+					<div id="col-3" class="square locked"></div>
 				</div>
 				<div id="row-2" class="cf">
-					<div id="col-1" class="square"></div>
-					<div id="col-2" class="square"></div>
-					<div id="col-3" class="square"></div>
+					<div id="col-1" class="square locked"></div>
+					<div id="col-2" class="square locked"></div>
+					<div id="col-3" class="square locked"></div>
 				</div>
 				<div id="row-3" class="cf">
-					<div id="col-1" class="square"></div>
-					<div id="col-2" class="square"></div>
-					<div id="col-3" class="square"></div>
+					<div id="col-1" class="square locked"></div>
+					<div id="col-2" class="square locked"></div>
+					<div id="col-3" class="square locked"></div>
 				</div>
 			</section> 
 
-			<p class="play2">
-				<label for="p2">Player 2:</label>
-				<input type="text" name="p2" id="p2" placeholder="Enter your name">
-				<img src="images/empire.svg" alt="Galactic Empire logo" class="logo">
-			</p>
+			<section class="play2">
+				<label for="p2">Empire:</label>
+				<input type="text" name="p2" id="p2" placeholder=" Enter your name">
+				<p class="button signUp2">Sign up</p>	
+				<p class="score" id="score2">0</p>	
+				<img src="images/empire.svg" alt="Galactic Empire logo" id="empireLogo">
+			</section>
 		</section> 
 
-		<section id="buttons">
-			<p class="button skirmish">Next Skirmish</p>	
-			<p class="button conflict">New Conflict</p>	
+		<section>
+			<p class="button skirmish locked">Next Skirmish</p>	
+			<p class="button conflict locked">New Conflict</p>	
 		</section>
 	</main>
 </body>
