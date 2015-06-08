@@ -131,12 +131,12 @@ function allSquaresChosen() {
 			if (val === null) {
 				allSquares = false;
 				
-				// Exit the inner loop
+				// An empty square has been found so exit the inner loop
 				return false;
 			}
 		});
 		if (!allSquares) {
-			// Exit the outer loop
+			// An empty square has been found so exit the outer loop
 			return false; 
 		}
 	});
@@ -183,15 +183,15 @@ function winVertical() {
 	var winningColumn = false;
 
 	// Loop through each column on the board
-	for (var c = 0; c < game.board.length && !winningColumn; c++) {
+	for (var col = 0; col < game.board.length && !winningColumn; col++) {
 		var matches = 0;
 		var exitColumn = false;
 
 		// Loop through each square in the current column
-		for (var r = 0; r < game.board[c].length && !exitColumn; r++) {
-			if (game.currentPlayer === game.board[r][c]) {
-				game.winningRow.push(r);
-				game.winningCol.push(c);
+		for (var row = 0; row < game.board[c].length && !exitColumn; row++) {
+			if (game.currentPlayer === game.board[row][col]) {
+				game.winningRow.push(row);
+				game.winningCol.push(col);
 				matches++;
 			} else {
 				game.winningRow = [];
@@ -217,10 +217,10 @@ function winDiagonal() {
 	var matches = 0;
 
 	// Loop through each square in the top-left to bottom-right line
-	for (var r = 0, c = 0, exit = false; r < game.board.length && !exit; r++, c++) {
-		if (game.currentPlayer === game.board[r][c]) {
-			game.winningRow.push(r);
-			game.winningCol.push(c);
+	for (var row = 0, col = 0, exit = false; row < game.board.length && !exit; row++, col++) {
+		if (game.currentPlayer === game.board[row][col]) {
+			game.winningRow.push(row);
+			game.winningCol.push(col);
 			matches++;
 		} else {
 			game.winningRow = [];
@@ -237,10 +237,10 @@ function winDiagonal() {
 		// Loop through each square in the top-right to bottom-left line
 		var matches = 0;
 
-		for (var r = 0, c = game.board.length - 1, exit = false; r < game.board.length && !exit; r++, c--) {
-			if (game.currentPlayer === game.board[r][c]) {
-				game.winningRow.push(r);
-				game.winningCol.push(c);
+		for (var row = 0, col = game.board.length - 1, exit = false; row < game.board.length && !exit; row++, col--) {
+			if (game.currentPlayer === game.board[row][col]) {
+				game.winningRow.push(row);
+				game.winningCol.push(col);
 				matches++;
 			} else {
 				game.winningRow = [];
