@@ -10,8 +10,16 @@ var game = {
 	winningRow: [],
 	winningCol: [],
 	playerOneWins: 0,
-	playerTwoWins: 0,
+	playerTwoWins: 0
 };
+
+// Declare selector variables
+var $gameResult;
+var $squareOnBoard;
+var $playerOneName;
+var $playerTwoName;
+var $playerOneScore;
+var $playerTwoScore;
 
 function dataStored() {
 // Return a flag to indicate if backed up data exists for a previous game
@@ -39,11 +47,11 @@ function saveData() {
 	})
 
 	// Screen elements
-	localStorage.setItem("result",$("#result").html());
-	localStorage.setItem("rsltClass",$("#result").attr("class"));
+	localStorage.setItem("result",$gameResult.html());
+	localStorage.setItem("rsltClass",$gameResult.attr("class"));
 
 	var squares = [];
-	$(".square").each(function (index,value) {
+	$squareOnBoard.each(function (index,value) {
 		squares.push($(this).attr("class"));
 	});
 	localStorage.setItem("squares",JSON.stringify(squares));
@@ -72,11 +80,11 @@ function getSavedData() {
 	})
 
 	// Screen elements
-	$("#result").attr("class",localStorage.getItem("rsltClass"));
-	$("#result").html(localStorage.getItem("result"));
+	$gameResult.attr("class",localStorage.getItem("rsltClass"));
+	$gameResult.html(localStorage.getItem("result"));
 
 	var squares = JSON.parse(localStorage.getItem("squares"));
-	$(".square").each(function (index,value) {
+	$squareOnBoard.each(function (index,value) {
 		($(this).attr("class",squares[index]));
 	});
 
@@ -85,8 +93,8 @@ function getSavedData() {
 		($(this).attr("class",buttons[index]));
 	});
 
-	$("#p1").val(game.PLAYER_1);
-	$("#p2").val(game.PLAYER_2);
+	$playerOneName.val(game.PLAYER_1);
+	$playerTwoName.val(game.PLAYER_2);
 }
 
 function deleteSavedData() {
@@ -263,8 +271,8 @@ function playGame() {
 		displayWin();
 
 	} else if (allSquaresChosen()) {
-		$("#result").html("STANDOFF!");
-		$("#result").removeClass("hidden");
+		$gameResult.html("STANDOFF!");
+		$gameResult.removeClass("hidden");
 
 	} else {
 		toggleCurrentPlayer();
@@ -274,7 +282,7 @@ function playGame() {
 function displayWin () {
 // Alter screen for whan a player wins a game
 	// Make all squares unclickable
-	$(".square").addClass("locked");
+	$squareOnBoard.addClass("locked");
 	
 	// Highlight winning squares
 	for (var i = 0; i < game.winningRow.length; i++) {
@@ -283,12 +291,12 @@ function displayWin () {
 	};
 
 	// Update scores
-	$("#score1").html(game.playerOneWins);
-	$("#score2").html(game.playerTwoWins);
+	$playerOneScore.html(game.playerOneWins);
+	$playerTwoScore.html(game.playerTwoWins);
 
 	// Display victory message
-	$("#result").html("VICTORY to " + game.currentPlayer + "!");
-	$("#result").removeClass("hidden");
+	$gameResult.html("VICTORY to " + game.currentPlayer + "!");
+	$gameResult.removeClass("hidden");
 }
 
 function toggleCurrentPlayer () {
@@ -328,11 +336,8 @@ function newSkirmish () {
 	game.winningRow = [];
 	game.winningCol = [];
 	
-	$(".square").removeClass("locked");
-	$(".square").removeClass("player1");
-	$(".square").removeClass("player2");
-	$(".square").removeClass("win");
-	$("#result").addClass("hidden");
+	$squareOnBoard.removeClass("locked player1 player2 win");
+	$gameResult.addClass("hidden");
 
 	if (game.currentPlayer === game.PLAYER_1) {
 		game.currentPlayer = game.PLAYER_2;
@@ -352,19 +357,16 @@ function newConflict () {
 	game.currentPlayer = "";
 	resetBoard();
 
-	$("#p1").val("");
-	$("#p2").val("");
-	$("#score1").html(game.playerOneWins);
-	$("#score2").html(game.playerTwoWins);
+	$playerOneName.val("");
+	$playerTwoName.val("");
+	$playerOneScore.html(game.playerOneWins);
+	$playerTwoScore.html(game.playerTwoWins);
 	$(".signUp1").removeClass("hidden");
 	$(".signUp2").removeClass("hidden");
 	$(".skirmish").addClass("locked");
 	$(".conflict").addClass("locked");
-	$(".square").addClass("locked");
-	$(".square").removeClass("player1");
-	$(".square").removeClass("player2");
-	$(".square").removeClass("win");
-	$("#result").addClass("hidden");
+	$squareOnBoard.addClass("locked").removeClass("player1 player2 win");
+	$gameResult.addClass("hidden");
 
 	deleteSavedData();
 	localStorage.removeItem("p1");
@@ -375,12 +377,24 @@ function newConflict () {
 
 function unlockElements () {
 // Allow unclickable elements to be clicked
-	$(".square").removeClass("locked");
+	$squareOnBoard.removeClass("locked");
 	$(".skirmish").removeClass("locked");
 	$(".conflict").removeClass("locked");
 }
 
+function setSelectors () {
+// Set selector variables
+	$gameResult = $("#result");
+	$squareOnBoard = $(".square");
+	$playerOneName = $("#p1");
+	$playerTwoName = $("#p2");
+	$playerOneScore = $("#score1");
+	$playerTwoScore = $("#score2");
+}
+
 $(document).ready(function () {
+
+	setSelectors();
 
 	if (dataStored()) {
 	// Recover previous game in progress
@@ -389,7 +403,7 @@ $(document).ready(function () {
 
 	$(".signUp1").on("click",function () {
 	// Player 1 sign up button clicked
-		game.PLAYER_1 = $("#p1").val();
+		game.PLAYER_1 = $playerOneName.val();
 		game.currentPlayer = game.PLAYER_1;
 		
 		$(".signUp1").addClass("hidden");
@@ -401,7 +415,7 @@ $(document).ready(function () {
 
 	$(".signUp2").on("click",function () {
 	// Player 2 sign up button clicked
-		game.PLAYER_2 = $("#p2").val();
+		game.PLAYER_2 = $playerTwoName.val();
 		
 		$(".signUp2").addClass("hidden");
 
@@ -410,7 +424,7 @@ $(document).ready(function () {
 		}
 	})
 
-	$(".square").on("click",function () {
+	$squareOnBoard.on("click",function () {
 		updateSquare(this);
 		updateGameBoard(this);		
 		playGame();
