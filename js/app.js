@@ -95,6 +95,9 @@ function getSavedData() {
 
 	$playerOneName.val(game.PLAYER_1);
 	$playerTwoName.val(game.PLAYER_2);
+
+	$playerOneScore.html(game.playerOneWins);
+	$playerTwoScore.html(game.playerTwoWins);
 }
 
 function deleteSavedData() {
@@ -188,7 +191,7 @@ function winVertical() {
 		var exitColumn = false;
 
 		// Loop through each square in the current column
-		for (var row = 0; row < game.board[c].length && !exitColumn; row++) {
+		for (var row = 0; row < game.board[col].length && !exitColumn; row++) {
 			if (game.currentPlayer === game.board[row][col]) {
 				game.winningRow.push(row);
 				game.winningCol.push(col);
@@ -320,9 +323,11 @@ function updateSquare (element) {
 	}	
 }
 
-function updateGameBoard (element) {
-// Update game.board to indicate current player has clicked this square 
+function updateBoardData (element) {
+// Update game.board to indicate current player has clicked this square
+	// Retreive the column number via the element's id; eg. "col-1" >> "1"
 	var elId = element.id.slice(-1);
+	// Retreive the row number via the parent element's id; eg. "row-2" >> "2"
 	var parentId = $(element).parent()[0].id.slice(-1);
 	
 	game.board[parseInt(parentId) - 1][parseInt(elId) - 1] = game.currentPlayer;	
@@ -426,7 +431,7 @@ $(document).ready(function () {
 
 	$squareOnBoard.on("click",function () {
 		updateSquare(this);
-		updateGameBoard(this);		
+		updateBoardData(this);		
 		playGame();
 		saveData();
 	})
