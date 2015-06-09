@@ -84,11 +84,15 @@ label {
 	border-radius: 10px 0;
 }
 
-#rebelLogo, #empireLogo {
+.rebelLogo, .empireLogo {
 	width: 175px;
 	display: block;
 	margin: 50px auto;
-	opacity: 0.6;
+	opacity: 0.2;
+}
+
+img.current {
+	opacity: 0.9;
 }
 
 #gameBoard {

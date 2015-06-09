@@ -305,8 +305,12 @@ function displayWin () {
 function toggleCurrentPlayer () {
 	if (game.currentPlayer === game.PLAYER_1) {
 		game.currentPlayer = game.PLAYER_2;
+		$('.rebelLogo').removeClass('current');
+		$('.empireLogo').addClass('current');
 	} else {
 		game.currentPlayer = game.PLAYER_1;
+		$('.empireLogo').removeClass('current');
+		$('.rebelLogo').addClass('current');
 	}
 }
 
@@ -344,11 +348,7 @@ function newSkirmish () {
 	$squareOnBoard.removeClass("locked player1 player2 win");
 	$gameResult.addClass("hidden");
 
-	if (game.currentPlayer === game.PLAYER_1) {
-		game.currentPlayer = game.PLAYER_2;
-	} else {
-		game.currentPlayer = game.PLAYER_1;
-	}	
+	toggleCurrentPlayer();
 }
 
 function newConflict () {
@@ -360,6 +360,7 @@ function newConflict () {
 	game.winningRow = [];
 	game.winningCol = [];
 	game.currentPlayer = "";
+	toggleCurrentPlayer();
 	resetBoard();
 
 	$playerOneName.val("");
@@ -409,12 +410,12 @@ $(document).ready(function () {
 	$(".signUp1").on("click",function () {
 	// Player 1 sign up button clicked
 		game.PLAYER_1 = $playerOneName.val();
-		game.currentPlayer = game.PLAYER_1;
 		
 		$(".signUp1").addClass("hidden");
 
 		if (game.PLAYER_2 !== null) {
 			unlockElements();
+			toggleCurrentPlayer();
 		}
 	})
 
@@ -426,6 +427,7 @@ $(document).ready(function () {
 
 		if (game.PLAYER_1 !== null) {
 			unlockElements();
+			toggleCurrentPlayer();
 		}
 	})
 
