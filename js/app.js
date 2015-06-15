@@ -20,6 +20,8 @@ var $playerOneName;
 var $playerTwoName;
 var $playerOneScore;
 var $playerTwoScore;
+var $rebelLogo;
+var $empireLogo;
 
 function dataStored() {
 // Return a flag to indicate if backed up data exists for a previous game
@@ -49,6 +51,8 @@ function saveData() {
 	// Screen elements
 	localStorage.setItem("result",$gameResult.html());
 	localStorage.setItem("rsltClass",$gameResult.attr("class"));
+	localStorage.setItem("rebelLogoClass",$rebelLogo.attr("class"));
+	localStorage.setItem("empireLogoClass",$empireLogo.attr("class"));
 
 	var squares = [];
 	$squareOnBoard.each(function (index,value) {
@@ -82,6 +86,8 @@ function getSavedData() {
 	// Screen elements
 	$gameResult.attr("class",localStorage.getItem("rsltClass"));
 	$gameResult.html(localStorage.getItem("result"));
+	$rebelLogo.attr("class",localStorage.getItem("rebelLogoClass"));
+	$empireLogo.attr("class",localStorage.getItem("empireLogoClass"));
 
 	var squares = JSON.parse(localStorage.getItem("squares"));
 	$squareOnBoard.each(function (index,value) {
@@ -101,7 +107,7 @@ function getSavedData() {
 }
 
 function deleteSavedData() {
-// Delete the existing backed up data
+// Remove all backed up data, except for the players' names and current win counts
 	localStorage.removeItem("currPlayer");
 	localStorage.removeItem("winningRow");
 	localStorage.removeItem("winningCol");
@@ -109,6 +115,8 @@ function deleteSavedData() {
 	localStorage.removeItem("buttons");
 	localStorage.removeItem("result");
 	localStorage.removeItem("rsltClass");
+	localStorage.removeItem("rebelLogoClass");
+	localStorage.removeItem("empireLogoClass");
 	
 	$.each(game.board, function (index,value) {
 		var row = "boardIndex-" + index;
@@ -305,12 +313,12 @@ function displayWin () {
 function toggleCurrentPlayer () {
 	if (game.currentPlayer === game.PLAYER_1) {
 		game.currentPlayer = game.PLAYER_2;
-		$('.rebelLogo').removeClass('current');
-		$('.empireLogo').addClass('current');
+		$rebelLogo.removeClass('current');
+		$empireLogo.addClass('current');
 	} else {
 		game.currentPlayer = game.PLAYER_1;
-		$('.empireLogo').removeClass('current');
-		$('.rebelLogo').addClass('current');
+		$empireLogo.removeClass('current');
+		$rebelLogo.addClass('current');
 	}
 }
 
@@ -374,11 +382,8 @@ function newConflict () {
 	$squareOnBoard.addClass("locked").removeClass("player1 player2 win");
 	$gameResult.addClass("hidden");
 
-	deleteSavedData();
-	localStorage.removeItem("p1");
-	localStorage.removeItem("p2");
-	localStorage.removeItem("p1Wins");
-	localStorage.removeItem("p2Wins");
+	// Remove all backed up data
+	localStorage.clear();
 }
 
 function unlockElements () {
@@ -396,6 +401,8 @@ function setSelectors () {
 	$playerTwoName = $("#p2");
 	$playerOneScore = $("#score1");
 	$playerTwoScore = $("#score2");
+	$rebelLogo = $('.rebelLogo');
+	$empireLogo = $('.empireLogo');
 }
 
 $(document).ready(function () {
